@@ -241,12 +241,12 @@ bool QMqttTopicFilter::match(const QMqttTopicName &name, MatchOptions matchOptio
     }
 
     if (d->filter.contains(QLatin1Char('+'))) {
-        const QVector<QStringRef> filterLevels = d->filter.splitRef(QLatin1Char('/'));
-        const QVector<QStringRef> topicLevels = topic.splitRef(QLatin1Char('/'));
+        QList<QString> filterLevels=d->filter.split(QLatin1Char('/'));
+        QList<QString> topicLevels=topic.split(QLatin1Char('/'));
         if (filterLevels.size() != topicLevels.size())
             return false;
         for (int i = 0; i < filterLevels.size(); ++i) {
-            const QStringRef &level = filterLevels.at(i);
+            const QString level = filterLevels.at(i);
             if (level != QLatin1String("+") && level != topicLevels.at(i))
                 return false;
         }

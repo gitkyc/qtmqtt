@@ -52,7 +52,7 @@ quint32 QMqttConnection::readBufferTyped(qint64 *dataSize)
 {
     if (dataSize)
         *dataSize -= sizeof(quint32);
-    return qFromBigEndian<quint32>(reinterpret_cast<const quint32 *>(readBuffer(4).constData()));
+    return qFromBigEndian<quint32>(reinterpret_cast<const uchar *>(readBuffer(4).constData()));
 }
 
 template<>
@@ -60,7 +60,7 @@ quint16 QMqttConnection::readBufferTyped(qint64 *dataSize)
 {
     if (dataSize)
         *dataSize -= sizeof(quint16);
-    return qFromBigEndian<quint16>(reinterpret_cast<const quint16 *>(readBuffer(2).constData()));
+    return qFromBigEndian<quint16>(reinterpret_cast<const uchar *>(readBuffer(2).constData()));
 }
 
 template<>
@@ -79,7 +79,7 @@ QString QMqttConnection::readBufferTyped(qint64 *dataSize)
     const quint16 size = readBufferTyped<quint16>(dataSize);
     if (dataSize)
         *dataSize -= size;
-    return QString::fromUtf8(reinterpret_cast<const char *>(readBuffer(size).constData()), size);
+    return QString::fromUtf8(readBuffer(size).constData(), size);
 }
 
 template<>
@@ -88,7 +88,7 @@ QByteArray QMqttConnection::readBufferTyped(qint64 *dataSize)
     const quint16 size = readBufferTyped<quint16>(dataSize);
     if (dataSize)
         *dataSize -= size;
-    return QByteArray(reinterpret_cast<const char *>(readBuffer(size).constData()), size);
+    return QByteArray(readBuffer(size).constData(), size);
 }
 
 QMqttConnection::QMqttConnection(QObject *parent) : QObject(parent)
